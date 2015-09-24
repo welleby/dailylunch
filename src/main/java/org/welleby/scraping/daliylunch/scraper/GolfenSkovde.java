@@ -1,4 +1,4 @@
-package org.welleby.datacollection.daliylunch.collection;
+package org.welleby.scraping.daliylunch.scraper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.time.DayOfWeek;
 
 import org.apache.commons.io.IOUtils;
 
-public class GolfenSkovde extends Collector {
+public class GolfenSkovde extends Scraper {
 
 	public GolfenSkovde() throws IOException {
 		super();
