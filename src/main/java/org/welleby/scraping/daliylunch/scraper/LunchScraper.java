@@ -3,15 +3,13 @@ package org.welleby.scraping.daliylunch.scraper;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.welleby.scraping.daliylunch.LunchMenuItem;
 
 public abstract class LunchScraper {
 	protected URL mainUrl;
-	protected Map<DayOfWeek, List<LunchMenuItem>> lunchMenu = new HashMap<DayOfWeek, List<LunchMenuItem>>();
+	protected List<LunchMenuItem> lunchMenu = new ArrayList<LunchMenuItem>();
 	
 	public List<String> getLunch(DayOfWeek day, boolean update) throws Exception{
 		if(update)
@@ -19,13 +17,17 @@ public abstract class LunchScraper {
 		return getLunch(day);
 	}
 	protected List<String> getLunch(DayOfWeek day) throws Exception {
-		List<LunchMenuItem> lunch = lunchMenu.get(day);
 		List<String> result = new ArrayList<String>();
-		if(lunch!=null)
-			for (LunchMenuItem item : lunch) {
-				result.add(item.getLunch());
-			}
+		for (LunchMenuItem lunchMenuItem : lunchMenu) {
+			if(lunchMenuItem.getDay().equals(day))
+				result.add(lunchMenuItem.getLunch());
+		}
 		return result;
+	}
+	protected void addLunch(String lunch, DayOfWeek day){
+		LunchMenuItem item = new LunchMenuItem(lunch, day);
+		if(!lunchMenu.contains(item))
+			lunchMenu.add(item);
 	}
 	public abstract void update() throws Exception;
 	

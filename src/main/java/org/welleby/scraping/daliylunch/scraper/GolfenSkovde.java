@@ -3,7 +3,6 @@ package org.welleby.scraping.daliylunch.scraper;
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -12,7 +11,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.welleby.scraping.daliylunch.LunchMenuItem;
 
 public class GolfenSkovde extends LunchScraper {
 	private final String divName;
@@ -42,18 +40,10 @@ public class GolfenSkovde extends LunchScraper {
 	}
 	
 	private void insertLunches(DayOfWeek day, Element lunchElement){
-		List<String> lunches = new ArrayList<String>();
 		List<TextNode> textNodes = lunchElement.textNodes();
 		for (TextNode textNode : textNodes) {
-			lunches.add(textNode.text());
+			addLunch(textNode.text().trim(), day);
 		}
-		
-		List<LunchMenuItem> result = new ArrayList<LunchMenuItem>();
-		for (String string : lunches) {
-			LunchMenuItem lunchMenuItem = new LunchMenuItem(string);
-			result.add(lunchMenuItem);
-		}
-		lunchMenu.put(day, result);
 	}
 
 }
