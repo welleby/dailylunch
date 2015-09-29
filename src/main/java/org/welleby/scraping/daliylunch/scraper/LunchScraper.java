@@ -34,9 +34,7 @@ public abstract class LunchScraper {
 			lunchMenu.add(item);
 	}
 	public void update() throws Exception {
-		this.doc = Jsoup.connect(url).get();
-		doc.outputSettings().charset("UTF-8");
-		doc.outputSettings().escapeMode(EscapeMode.xhtml);
+		setDoc(Jsoup.connect(url).get());
 	}
 	public abstract void scrape() throws Exception;
 	
@@ -54,5 +52,7 @@ public abstract class LunchScraper {
 	}
 	public void setDoc(Document doc) {
 		this.doc = doc;
+		doc.outputSettings().charset("UTF-8");
+		doc.outputSettings().escapeMode(EscapeMode.xhtml);
 	}
 }
