@@ -2,6 +2,9 @@ package org.welleby.scraping.daliylunch.scraper;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
@@ -14,22 +17,30 @@ public class PinchosSkovde extends LunchScraper {
 	public PinchosSkovde() {
 		super();
 		this.restaurantName = "Pinchos";
-		this.url = "http://http://www.pinchos.se/lunch-skovde/";
+		this.url = "http://www.pinchos.se/lunch-skovde/";
 		this.divName = "block-yui_3_17_2_3_1428390440531_10505";
 	}
 	
 	public void scrape() throws IOException{
 		Element lunchDiv = doc.getElementById(divName);
-		Elements monday = lunchDiv.getElementsMatchingOwnText("Måndag");
-		Elements tuesday = lunchDiv.getElementsMatchingOwnText("Tisdag");
-		Elements wednesday = lunchDiv.getElementsMatchingOwnText("Onsdag");
-		Elements thursday = lunchDiv.getElementsMatchingOwnText("Torsdag");
-		Elements friday = lunchDiv.getElementsMatchingOwnText("Fredag");
-		insertLunches(DayOfWeek.MONDAY, monday.get(0).nextElementSibling());
-		insertLunches(DayOfWeek.TUESDAY, tuesday.get(0).nextElementSibling());
-		insertLunches(DayOfWeek.WEDNESDAY, wednesday.get(0).nextElementSibling());
-		insertLunches(DayOfWeek.THURSDAY, thursday.get(0).nextElementSibling());
-		insertLunches(DayOfWeek.FRIDAY, friday.get(0).nextElementSibling());
+		List<Elements> prefixElements = new ArrayList<Elements>();
+		
+		prefixElements.add(lunchDiv.getElementsMatchingOwnText("Fisk"));
+		prefixElements.add(lunchDiv.getElementsMatchingOwnText("Kött"));
+		prefixElements.add(lunchDiv.getElementsMatchingOwnText("Pasta"));
+		prefixElements.add(lunchDiv.getElementsMatchingOwnText("Vegetariskt"));
+		prefixElements.add(lunchDiv.getElementsMatchingOwnText("Sallad"));
+		
+		Calendar now = new GregorianCalendar(); 
+		DayOfWeek today = DayOfWeek.of(now.get(Calendar.DAY_OF_WEEK));
+		
+		for (Elements elements : prefixElements) {
+			Element lunchElement = elements.get(0).nextElementSibling();
+			while(lunchElement.tag().getName().equals("p")) {
+				insertLunches(today, lunchElement);
+				lunchElement = lunchElement.nextElementSibling();
+			}
+		}
 	}
 	
 	private void insertLunches(DayOfWeek day, Element lunchElement){
