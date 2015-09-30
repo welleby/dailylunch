@@ -6,15 +6,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.welleby.scraping.daliylunch.scraper.GladjeSkovde;
 import org.welleby.scraping.daliylunch.scraper.LunchScraper;
-import org.welleby.scraping.daliylunch.scraper.GolfenSkovde;
 
 public class DailyLunchCLIApp {
 
 	private List<String> lunch = new ArrayList<String>();
 	
 	public static void main(String[] args) throws Exception {
-		LunchScraper scraper = new GolfenSkovde();
+		LunchScraper scraper = new GladjeSkovde();
 		
 		Calendar now = new GregorianCalendar(); 
 		DayOfWeek today = DayOfWeek.of(now.get(Calendar.DAY_OF_WEEK));

@@ -2,6 +2,7 @@ package org.welleby.scraping.daliylunch.scraper;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.List;
 
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -24,5 +25,13 @@ public abstract class LunchScraperTest {
 		doc.append(input);
 		scraper.setDoc(doc);
 		assertNotNull(scraper.getLunch(DayOfWeek.FRIDAY));
+		String result = "";
+		for (DayOfWeek day : DayOfWeek.values()) {
+			List<String> lunch = scraper.getLunch(day);
+			for (String string : lunch) {
+				result +=string+"\r\n";
+			}
+		}
+		assertEquals(output, result);
 	}
 }
