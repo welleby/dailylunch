@@ -27,7 +27,7 @@ public class GladjeSkovde extends LunchScraper {
 				String tempResult="";
 				for (Element lunchElement : lunchDiv.getAllElements()) {
 					if(lunchElement.hasClass("foodTitle"))
-						tempResult=lunchElement.text();
+						tempResult=lunchElement.text().trim()+" ";
 					else if(lunchElement.hasClass("foodText")) {
 						addLunch(tempResult+lunchElement.text(), day);
 						tempResult="";
