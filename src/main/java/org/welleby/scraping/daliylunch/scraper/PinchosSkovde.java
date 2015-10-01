@@ -46,7 +46,9 @@ public class PinchosSkovde extends LunchScraper {
 	private void insertLunches(DayOfWeek day, Element lunchElement){
 		List<TextNode> textNodes = lunchElement.textNodes();
 		for (TextNode textNode : textNodes) {
-			addLunch(textNode.text().trim(), day);
+			String text = textNode.text().trim();
+			text = text.replaceAll("^[  ]", "");
+			addLunch(text, day);
 		}
 	}
 
