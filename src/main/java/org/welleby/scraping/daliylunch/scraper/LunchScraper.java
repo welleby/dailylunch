@@ -24,11 +24,13 @@ public abstract class LunchScraper {
 		List<String> result = new ArrayList<String>();
 		for (LunchMenuItem lunchMenuItem : lunchMenu) {
 			if(lunchMenuItem.getDay().equals(day))
-				result.add(lunchMenuItem.getLunch() +";");
+				result.add(lunchMenuItem.getLunch());
 		}
 		return result;
 	}
 	protected void addLunch(String lunch, DayOfWeek day){
+		lunch = lunch.replaceAll("^[\\s;:,.-]+", "");
+		lunch = lunch.replaceAll("$[\\s;:,.-]+", "");
 		LunchMenuItem item = new LunchMenuItem(lunch, day);
 		if(!lunchMenu.contains(item))
 			lunchMenu.add(item);

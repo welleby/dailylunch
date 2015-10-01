@@ -32,6 +32,7 @@ public abstract class LunchScraperTest {
 				result +=string+"\r\n";
 			}
 		}
+		result = result.replaceFirst("\\r\\n$", "");
 		assertEquals(output, result);
 	}
 }
