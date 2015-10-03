@@ -16,6 +16,7 @@ import org.welleby.scraping.daliylunch.scraper.GladjeSkovde;
 import org.welleby.scraping.daliylunch.scraper.GolfenSkovde;
 import org.welleby.scraping.daliylunch.scraper.LunchScraper;
 import org.welleby.scraping.daliylunch.scraper.MammaMiaSkovde;
+import org.welleby.scraping.daliylunch.scraper.MangosSkovde;
 import org.welleby.scraping.daliylunch.scraper.PinchosSkovde;
 
 public class DailyLunchCLIApp {
@@ -59,6 +60,7 @@ public class DailyLunchCLIApp {
 	    scrapers.add(new GolfenSkovde());
 	    scrapers.add(new MammaMiaSkovde());
 	    scrapers.add(new PinchosSkovde());
+	    scrapers.add(new MangosSkovde());
 	}
 
 	@SuppressWarnings("unused")
