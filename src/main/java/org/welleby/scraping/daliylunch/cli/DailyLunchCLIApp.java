@@ -6,6 +6,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.welleby.commons.time.DayOfWeekHelper;
 import org.welleby.scraping.daliylunch.scraper.GladjeSkovde;
 import org.welleby.scraping.daliylunch.scraper.GolfenSkovde;
@@ -18,21 +23,42 @@ public class DailyLunchCLIApp {
 	private List<String> lunch = new ArrayList<String>();
 	
 	public static void main(String[] args) throws Exception {
-		List<LunchScraper> scrapers = new ArrayList<LunchScraper>();
-		scrapers.add(new GladjeSkovde());
-		scrapers.add(new GolfenSkovde());
-		scrapers.add(new MammaMiaSkovde());
-		scrapers.add(new PinchosSkovde());
+		CommandLineParser parser = new DefaultParser();
+		Options options = new Options();
+		options.addOption( "d", "day", true, "which day to show menus for" );
 		
-		Calendar now = new GregorianCalendar(); 
-		DayOfWeek today = DayOfWeekHelper.getDay(now);
-		
-		System.out.println(today.toString() + " : \r\n");
-		for (LunchScraper scraper : scrapers) {
-			System.out.println(scraper.getRestaurantName() +" : "+ scraper.getLunch(today));
+		try {
+		    CommandLine line = parser.parse( options, args );
+		    DayOfWeek today = null;
+		    if( line.hasOption( "day" ) ) {
+		    	String value = line.getOptionValue("day");
+		    	today = DayOfWeek.valueOf(value.toUpperCase());
+		    	if(today==null)
+		    		throw new ParseException("Didnt recognize day "+value+".");
+		    }else {
+		    	Calendar now = new GregorianCalendar(); 
+		    	today = DayOfWeekHelper.getDay(now);
+		    }
+		    
+		    List<LunchScraper> scrapers = new ArrayList<LunchScraper>();
+		    fillScrapers(scrapers);
+		    
+		    
+		    System.out.println(today.toString() + " : \r\n");
+		    for (LunchScraper scraper : scrapers) {
+		    	System.out.println(scraper.getRestaurantName() +" : "+ scraper.getLunch(today));
+		    }
 		}
-		
-
+		catch( ParseException exp ) {
+		    System.out.println( "Unexpected exception:" + exp.getMessage() );
+		}
+	}
+	
+	private static void fillScrapers(List<LunchScraper> scrapers) {
+	    scrapers.add(new GladjeSkovde());
+	    scrapers.add(new GolfenSkovde());
+	    scrapers.add(new MammaMiaSkovde());
+	    scrapers.add(new PinchosSkovde());
 	}
 
 	@SuppressWarnings("unused")
